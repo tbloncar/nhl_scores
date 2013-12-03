@@ -3,7 +3,7 @@ NHL Scores
 
 Use Ruby to grab live/recent NHL scores and upcoming matchup details.
 
-#### Lisense
+#### License
 
 Copyright (c) 2013 Travis Loncar.
 
