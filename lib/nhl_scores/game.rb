@@ -17,5 +17,15 @@ module NHLScores
       @ustv = game_attributes["ustv"]
       @catv = game_attributes["catv"]
     end
+
+    def winner
+      return "This game is not final." if status != "final"
+      return home_team_score > away_team_score ? home_team : away_team
+    end
+
+    def loser
+      return "This game is not final." if status != "final"
+      return home_team_score > away_team_score ? away_team : home_team
+    end
   end
 end
