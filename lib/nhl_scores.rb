@@ -1,5 +1,6 @@
 require_relative 'nhl_scores/game'
 require_relative 'nhl_scores/games'
+require_relative 'nhl_scores/cli'
 
 module NHLScores
   ENDPOINT = "http://live.nhle.com/GameData/RegularSeasonScoreboardv3.jsonp"
@@ -29,7 +30,7 @@ module NHLScores
     phx: "Phoenix Coyotes",
     pit: "Pittsburgh Penguins",
     sj:  "San Jose Sharks",
-    stl: "St. Louis Blues",
+    stl: "St Louis Blues",
     tb:  "Tampa Bay Lightning",
     tor: "Toronto Maple Leafs",
     van: "Vancouver Canucks",

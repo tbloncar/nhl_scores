@@ -104,13 +104,30 @@ module NHLScores
         game.loser.should == loser
       end
 
+      it 'should provide the winning team\'s score' do
+        winner_score = game.home_team_score > game.away_team_score ? game.home_team_score : game.away_team_score
+        game.winner_score.should == winner_score
+      end
+      
+      it 'should provide the losing team\'s score' do
+        loser_score = game.home_team_score > game.away_team_score ? game.away_team_score : game.home_team_score
+        game.loser_score.should == loser_score
+      end
+
       it 'should indicate whether or not a certain team was/is involved' do
         game.includes_team?(game.home_team).should be_true
         game.includes_team?(game.away_team).should be_true
       end
     end
+
+    context 'when in progress' do
+      
+    end
   end
 
   describe CLI do
+    it 'should be initialized with games' do
+      subject.games.should be_true
+    end
   end
 end
