@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'nhl_scores'
+
+NHLScores::CLI.start(ARGV)

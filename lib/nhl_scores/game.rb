@@ -27,5 +27,9 @@ module NHLScores
       return "This game is not final." if status != "final"
       return home_team_score > away_team_score ? away_team : home_team
     end
+
+    def includes_team?(team_name)
+      return home_team == team_name || away_team == team_name
+    end
   end
 end

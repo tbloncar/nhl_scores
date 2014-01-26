@@ -1,6 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 module NHLScores
+  describe NHLScores do
+    it 'should include a team abbreviation to name map' do
+      TEAM_ABBREV_MAP.should be_true
+      TEAM_ABBREV_MAP[:pit].should == "Pittsburgh Penguins"
+      TEAM_ABBREV_MAP[:mtl].should == "Montréal Canadiens"
+    end
+  end
+
   describe Games do
     subject(:games) { NHLScores::Games.new }
 
@@ -41,6 +49,28 @@ module NHLScores
         games.upcoming.first.status.should == ""
       end
     end
+
+    context 'with team abbreviation provided' do
+      it 'should provide an array of all games including team' do
+        games.all(team_abbrev: :pit).first.includes_team?("Pittsburgh Penguins").should be_true if games.all(team_abbrev: :pit).any?
+        games.all(team_abbrev: :wsh).first.includes_team?("Washington Capitals").should be_true if games.all(team_abbrev: :wsh).any?
+      end
+
+      it 'should provide an array of recent games including team' do
+        games.recent(team_abbrev: :tb).first.includes_team?("Tampa Bay Lightning").should be_true if games.recent(team_abbrev: :tb).any?
+        games.recent(team_abbrev: :phx).first.includes_team?("Phoenix Coyotes").should be_true if games.recent(team_abbrev: :phx).any?
+      end
+      
+      it 'should provide an array of games in progress including team' do
+        games.in_progress(team_abbrev: :pit).first.includes_team?("Pittsburgh Penguins").should be_true if games.in_progress(team_abbrev: :pit).any?
+        games.in_progress(team_abbrev: :col).first.includes_team?("Colorado Avalanche").should be_true if games.in_progress(team_abbrev: :col).any?
+      end
+
+      it 'should provide an array of upcoming games including team' do
+        games.upcoming(team_abbrev: :ana).first.includes_team?("Anaheim Ducks").should be_true if games.upcoming(team_abbrev: :ana).any?
+        games.upcoming(team_abbrev: :nyr).first.includes_team?("New York Rangers").should be_true if games.upcoming(team_abbrev: :nyr).any?
+      end
+    end
   end
 
   describe Game do
@@ -73,6 +103,14 @@ module NHLScores
         loser = game.home_team_score > game.away_team_score ? game.away_team : game.home_team
         game.loser.should == loser
       end
+
+      it 'should indicate whether or not a certain team was/is involved' do
+        game.includes_team?(game.home_team).should be_true
+        game.includes_team?(game.away_team).should be_true
+      end
     end
+  end
+
+  describe CLI do
   end
 end
