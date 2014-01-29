@@ -45,10 +45,10 @@ The public API also exposes the following methods:
 - `NHLScores::Game#loser` - Returns the losing team for a completed game
 - `NHLScores::Game#winner_score` - Returns the winning score for a completed game
 - `NHLScores::Game#losing_score` - Returns the losing score for a completed game
-- 'NHLScores::Game#leader` - Returns the leading team for a game in progress
-- 'NHLScores::Game#trailer` - Returns the trailing team for a game in progress
-- 'NHLScores::Game#leader_score` - Returns the leading score for a game in progress
-- 'NHLScores::Game#trailer_score` - Returns the trailing score for a game in progress
+- `NHLScores::Game#leader` - Returns the leading team for a game in progress
+- `NHLScores::Game#trailer` - Returns the trailing team for a game in progress
+- `NHLScores::Game#leader_score` - Returns the leading score for a game in progress
+- `NHLScores::Game#trailer_score` - Returns the trailing score for a game in progress
 
 #### CLI
 
@@ -57,15 +57,15 @@ current, and upcoming games via the command line.
 
 **Recent Scores**
 
-  nhl recent
+    nhl recent
 
 **Current Scores**
 
-  nhl current
+    nhl current
 
 **Upcoming Games**
 
-  nhl upcoming
+    nhl upcoming
 
 **Narrow the Response**
 
