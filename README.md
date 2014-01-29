@@ -5,9 +5,9 @@ Use Ruby to fetch details about recent, current, and upcoming regular season NHL
 
 #### Installation
 
-Tested with `ruby-2.0.0-p247`. With Ruby installed, run the following:
+Tested with `ruby-2.0.0-p247`.
 
-  gem install nhl_scores
+    gem install nhl_scores
 
 #### Usage Details
 
@@ -28,16 +28,16 @@ the `NHLScores::Games` instance.
 Each array consists of zero or more instances of the aforementioned
 `NHLScores::Game` class. Each game instance has the following properties:
 
-- id
-- date
-- start_time
-- home_team
-- away_team
-- home_team_score
-- away_team_score
-- status
-- ustv (US television)
-- catv (Canadian television)
+- `id`
+- `date`
+- `start_time`
+- `home_team`
+- `away_team`
+- `home_team_score`
+- `away_team_score`
+- `status`
+- `ustv` (US television)
+- `catv` (Canadian television)
 
 The public API also exposes the following methods:
 
@@ -73,7 +73,7 @@ You can use the `--team (-t)` option with a team abbreviation to
 narrow your results. The full list of team abbreviation-name mappings
 can be found in `lib/nhl_scores.rb`.
 
-  nhl upcoming -t pit
+    nhl upcoming -t pit
 
 Let's go Pens.
 
