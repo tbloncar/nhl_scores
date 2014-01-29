@@ -1,6 +1,8 @@
 NHL Scores
 ----------
 
+[![Build Status](https://travis-ci.org/tbloncar/nhl_scores.png?branch=master)](https://travis-ci.org/tbloncar/nhl_scores)
+
 Use Ruby to fetch details about recent, current, and upcoming regular season NHL matchups.
 
 #### Installation
