@@ -36,36 +36,36 @@ module NHLScores
       puts
       title     = "#{type.upcase} NHL GAMES"
       underline = "-" * title.length 
-      puts title.rjust(30)
-      puts underline.rjust(30)
+      puts title.align.yellow
+      puts underline.align
       puts
       if games.any?
         games.each do |game|
           send("output_#{type}_game", game)
         end
       else
-        puts "There are no #{type} games.".rjust(30)
+        puts "There are no #{type} games.".align
       end
       puts
     end
 
     def output_recent_game(game)
-      puts "#{game.date}:".rjust(30) + " #{game.winner} defeat #{game.loser} (#{game.winner_score}-#{game.loser_score})"
+      puts "#{game.date}:".align + " #{game.winner} defeat #{game.loser} (#{game.winner_score}-#{game.loser_score})"
     end
 
     def output_current_game(game)
       if game.started?
         score_descriptor = score_descriptor_string(game)
-        output = "IN PROGRESS:".rjust(30) + " #{game.leader} #{score_descriptor} #{game.trailer} (#{game.leader_score}-#{game.trailer_score})"
+        output = "IN PROGRESS:".align + " #{game.leader} #{score_descriptor} #{game.trailer} (#{game.leader_score}-#{game.trailer_score})"
       else
-        output = "PRE GAME:".rjust(30) + " #{game.home_team} vs. #{game.away_team}"
+        output = "PRE GAME:".align + " #{game.home_team} vs. #{game.away_team}"
       end
       output += tv_string(game)
       puts output
     end
 
     def output_upcoming_game(game)
-      output = "#{game.date} @ #{game.start_time} (EST):".rjust(30) + " #{game.home_team} vs. #{game.away_team}"
+      output = "#{game.date} @ #{game.start_time} (EST):".align + " #{game.home_team} vs. #{game.away_team}"
       output += tv_string(game)
       puts output
     end

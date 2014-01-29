@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/tbloncar/nhl_scores"
   gem.license = "MIT"
   gem.summary = "Use Ruby to grab live/recent NHL scores and upcoming matchup details."
-  gem.description = "Use Ruby to grab live/recent NHL scores and upcoming matchup details."
+  gem.description = "Use Ruby to grab live/recent NHL scores and upcoming matchup details. This gem ships with a minimal CLI."
   gem.email = "loncar.travis@gmail.com"
   gem.authors = ["Travis Loncar"]
   # dependencies defined in Gemfile

@@ -38,3 +38,15 @@ module NHLScores
     wsh: "Washington Capitals"
   }
 end
+
+class String
+  def yellow; color(self, "\e[0;33m"); end
+
+  def color(text, color_code)
+    "#{color_code}#{text}\e[0m"
+  end
+
+  def align
+    self.rjust(32)
+  end
+end
