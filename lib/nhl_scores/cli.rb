@@ -36,36 +36,36 @@ module NHLScores
       puts
       title     = "#{type.upcase} NHL GAMES"
       underline = "-" * title.length 
-      puts title.align.yellow
-      puts underline.align
+      puts TextHelpers.yellow(TextHelpers.align(title))
+      puts TextHelpers.align(underline)
       puts
       if games.any?
         games.each do |game|
           send("output_#{type}_game", game)
         end
       else
-        puts "There are no #{type} games.".align
+        puts TextHelpers.align("There are no #{type} games.")
       end
       puts
     end
 
     def output_recent_game(game)
-      puts "#{game.date}:".align + " #{game.winner} defeat #{game.loser} (#{game.winner_score}-#{game.loser_score})"
+      puts TextHelpers.align("#{game.date}:") + " #{game.winner} defeat #{game.loser} (#{game.winner_score}-#{game.loser_score})"
     end
 
     def output_current_game(game)
       if game.started?
         score_descriptor = score_descriptor_string(game)
-        output = "IN PROGRESS:".align + " #{game.leader} #{score_descriptor} #{game.trailer} (#{game.leader_score}-#{game.trailer_score})"
+        output = TextHelpers.align("IN PROGRESS:") + " #{game.leader} #{score_descriptor} #{game.trailer} (#{game.leader_score}-#{game.trailer_score})"
       else
-        output = "PRE GAME:".align + " #{game.home_team} vs. #{game.away_team}"
+        output = TextHelpers.align("PRE GAME:") + " #{game.home_team} vs. #{game.away_team}"
       end
       output += tv_string(game)
       puts output
     end
 
     def output_upcoming_game(game)
-      output = "#{game.date} @ #{game.start_time} (EST):".align + " #{game.home_team} vs. #{game.away_team}"
+      output = TextHelpers.align("#{game.date} @ #{game.start_time} (EST):") + " #{game.home_team} vs. #{game.away_team}"
       output += tv_string(game)
       puts output
     end
@@ -80,6 +80,24 @@ module NHLScores
     def score_descriptor_string(game)
       return "tied with" if game.home_team_score == game.away_team_score
       return "lead"
+    end
+  end
+
+  class TextHelpers
+    class << self
+      def yellow(str)
+        color(str, "\e[0;33m")
+      end
+
+      def align(str)
+        str.rjust(32)
+      end
+
+      private
+
+      def color(text, color_code)
+        "#{color_code}#{text}\e[0m"
+      end
     end
   end
 end
