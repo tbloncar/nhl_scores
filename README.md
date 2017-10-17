@@ -9,9 +9,9 @@ Use Ruby to fetch details about recent, current, and upcoming regular season NHL
 
 #### Installation
 
-Tested with `ruby-2.0`, `ruby-2.1`, and `ruby-2.2`.
-
-    gem install nhl_scores
+```shell
+gem install nhl_scores
+```
 
 #### Usage Details
 
@@ -61,15 +61,21 @@ current, and upcoming games via the command line.
 
 **Recent Scores**
 
-    nhl recent
+```shell
+nhl recent
+```
 
 **Current Scores**
 
-    nhl current
+```shell
+nhl current
+```
 
 **Upcoming Games**
 
-    nhl upcoming
+```shell
+nhl upcoming
+```
 
 **Narrow the Response**
 
@@ -77,7 +83,9 @@ You can use the `--team (-t)` option with a team abbreviation to
 narrow your results. The full list of team abbreviation-name mappings
 can be found in `lib/nhl_scores.rb`.
 
-    nhl upcoming -t pit
+```shell
+nhl upcoming -t pit
+```
 
 Let's go Pens.
 
