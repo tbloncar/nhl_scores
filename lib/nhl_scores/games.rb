@@ -3,7 +3,7 @@ module NHLScores
     attr_reader :games
 
     require 'httparty'
-    
+
     def initialize
       response = HTTParty.get(ENDPOINT).sub("loadScoreboard(", "").sub(")", "")
       @games   = JSON.parse(response)["games"].map { |game_attributes| Game.new(game_attributes) }
@@ -30,8 +30,7 @@ module NHLScores
     private
 
     def team_name(team_abbrev)
-      return TEAM_ABBREV_MAP[team_abbrev.to_sym] if TEAM_ABBREV_MAP.has_key?(team_abbrev.to_sym)
-      raise ArgumentError, 'Invalid abbreviation.'
+      return TEAM_ABBREVIATIONS.fetch(team_abbrev.to_sym)
     end
   end
 end

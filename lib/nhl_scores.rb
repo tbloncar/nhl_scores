@@ -3,9 +3,9 @@ require_relative 'nhl_scores/games'
 require_relative 'nhl_scores/cli'
 
 module NHLScores
-  ENDPOINT = "http://live.nhle.com/GameData/RegularSeasonScoreboardv3.jsonp"
+  ENDPOINT = "http://live.nhle.com/GameData/RegularSeasonScoreboardv3.jsonp".freeze
 
-  TEAM_ABBREV_MAP = {
+  TEAM_ABBREVIATIONS = {
     ana: "Anaheim Ducks",
     bos: "Boston Bruins",
     buf: "Buffalo Sabres",
@@ -34,7 +34,8 @@ module NHLScores
     tb:  "Tampa Bay Lightning",
     tor: "Toronto Maple Leafs",
     van: "Vancouver Canucks",
+    vgk: "Vegas Golden Knights",
     wpg: "Winnipeg Jets",
     wsh: "Washington Capitals"
-  }
+  }.freeze
 end

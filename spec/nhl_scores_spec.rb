@@ -1,11 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 module NHLScores
+  # TODO: This is in need of some mocking love.
+
   describe NHLScores do
     it 'should include a team abbreviation to name map' do
-      TEAM_ABBREV_MAP.should be_true
-      TEAM_ABBREV_MAP[:pit].should == "Pittsburgh Penguins"
-      TEAM_ABBREV_MAP[:mtl].should == "Montréal Canadiens"
+      expect(TEAM_ABBREVIATIONS[:pit]).to eq("Pittsburgh Penguins")
+      expect(TEAM_ABBREVIATIONS[:mtl]).to eq("Montréal Canadiens")
     end
   end
 
@@ -13,121 +14,96 @@ module NHLScores
     subject(:games) { NHLScores::Games.new }
 
     it 'should be valid' do
-      games.should be_true
+      expect(games).to be_truthy
     end
 
     it 'should be initialized with games' do
-      games.games.should be_true
-      games.games.first.class.should == NHLScores::Game
+      expect(games.games).to be_truthy
+      expect(games.games.first.class).to eq(NHLScores::Game)
     end
 
     it 'should provide an array of all games' do
-      games.all.class.should == Array
-      games.all.count.should == games.games.count
+      expect(games.all.class).to eq(Array)
+      expect(games.all.count).to eq(games.games.count)
+    end
+
+    def expect_games_with_status(collection, status)
+      discovered_games = games.send(collection)
+      expect(discovered_games.class).to eq(Array)
+      return unless discovered_games.any?
+
+      expect(discovered_games.first.status).to eq(status)
+      expect(discovered_games.last.status).to eq(status)
     end
 
     it 'should provide an array of recent games' do
-      games.recent.class.should == Array
-      if games.recent.any?
-        games.recent.first.status.should == "final"
-        games.recent.last.status.should == "final"
-      end
+      expect_games_with_status(:recent, "final")
     end
 
     it 'should provide an array of games in progress' do
-      games.in_progress.class.should == Array
-      if games.in_progress.any?
-        games.in_progress.first.status.should == "progress"
-        games.in_progress.last.status.should == "progress"
-      end
+      expect_games_with_status(:in_progress, "progress")
     end
 
     it 'should provide an array of upcoming games' do
-      games.upcoming.class.should == Array
-      if games.upcoming.any?
-        games.upcoming.first.status.should == ""
-        games.upcoming.first.status.should == ""
-      end
+      expect_games_with_status(:upcoming, "")
     end
 
     context 'with team abbreviation provided' do
+      def expect_team_included(collection, team_abbrev)
+        discovered_games = games.send(collection, team_abbrev: team_abbrev)
+
+        return unless discovered_games.any?
+        expect(discovered_games.first.includes_team?(NHLScores::TEAM_ABBREVIATIONS[team_abbrev])).to be true
+      end
+
       it 'should provide an array of all games including team' do
-        games.all(team_abbrev: :pit).first.includes_team?("Pittsburgh Penguins").should be_true if games.all(team_abbrev: :pit).any?
-        games.all(team_abbrev: :wsh).first.includes_team?("Washington Capitals").should be_true if games.all(team_abbrev: :wsh).any?
+        %i[pit wsh vgk].each { |abbrev| expect_team_included(:all, abbrev) }
       end
 
       it 'should provide an array of recent games including team' do
-        games.recent(team_abbrev: :tb).first.includes_team?("Tampa Bay Lightning").should be_true if games.recent(team_abbrev: :tb).any?
-        games.recent(team_abbrev: :phx).first.includes_team?("Phoenix Coyotes").should be_true if games.recent(team_abbrev: :phx).any?
+        %i[tb phx sj].each { |abbrev| expect_team_included(:recent, abbrev) }
       end
-      
+
       it 'should provide an array of games in progress including team' do
-        games.in_progress(team_abbrev: :pit).first.includes_team?("Pittsburgh Penguins").should be_true if games.in_progress(team_abbrev: :pit).any?
-        games.in_progress(team_abbrev: :col).first.includes_team?("Colorado Avalanche").should be_true if games.in_progress(team_abbrev: :col).any?
+        %i[col wpg nj].each { |abbrev| expect_team_included(:in_progress, abbrev) }
       end
 
       it 'should provide an array of upcoming games including team' do
-        games.upcoming(team_abbrev: :ana).first.includes_team?("Anaheim Ducks").should be_true if games.upcoming(team_abbrev: :ana).any?
-        games.upcoming(team_abbrev: :nyr).first.includes_team?("New York Rangers").should be_true if games.upcoming(team_abbrev: :nyr).any?
+        %i[ana nyr chi].each { |abbrev| expect_team_included(:upcoming, abbrev) }
       end
     end
   end
 
   describe Game do
     context 'when final' do
-      subject(:game) { NHLScores::Games.new.recent.first }
-
-      it 'should be valid' do
-        game.should be_true
-      end
-
-      it 'should be initialized with the appropriate attributes' do
-        game.should respond_to(:id)
-        game.should respond_to(:date)
-        game.should respond_to(:start_time)
-        game.should respond_to(:home_team)
-        game.should respond_to(:away_team)
-        game.should respond_to(:home_team_score)
-        game.should respond_to(:away_team_score)
-        game.should respond_to(:status)
-        game.should respond_to(:ustv)
-        game.should respond_to(:catv)
+      before(:all) do
+        @game = NHLScores::Games.new.recent.first
       end
 
       it 'should provide the winning team' do
-        winner = game.home_team_score > game.away_team_score ? game.home_team : game.away_team
-        game.winner.should == winner
+        winner = @game.home_team_score > @game.away_team_score ? @game.home_team : @game.away_team
+        expect(@game.winner).to eq(winner)
       end
 
       it 'should provide the losing team' do
-        loser = game.home_team_score > game.away_team_score ? game.away_team : game.home_team
-        game.loser.should == loser
+        loser = @game.home_team_score > @game.away_team_score ? @game.away_team : @game.home_team
+        expect(@game.loser).to eq(loser)
       end
 
       it 'should provide the winning team\'s score' do
-        winner_score = game.home_team_score > game.away_team_score ? game.home_team_score : game.away_team_score
-        game.winner_score.should == winner_score
+        winner_score = @game.home_team_score > @game.away_team_score ? @game.home_team_score : @game.away_team_score
+        expect(@game.winner_score).to eq(winner_score)
       end
-      
+
       it 'should provide the losing team\'s score' do
-        loser_score = game.home_team_score > game.away_team_score ? game.away_team_score : game.home_team_score
-        game.loser_score.should == loser_score
+        loser_score = @game.home_team_score > @game.away_team_score ? @game.away_team_score : @game.home_team_score
+        expect(@game.loser_score).to eq(loser_score)
       end
 
       it 'should indicate whether or not a certain team was/is involved' do
-        game.includes_team?(game.home_team).should be_true
-        game.includes_team?(game.away_team).should be_true
+        expect(@game.includes_team?(@game.home_team)).to be true
+        expect(@game.includes_team?(@game.away_team)).to be true
       end
-    end
-
-    context 'when in progress' do
-      
-    end
-  end
-
-  describe CLI do
-    it 'should be initialized with games' do
-      subject.games.should be_true
     end
   end
 end

@@ -3,8 +3,6 @@ module NHLScores
     attr_reader :id, :date, :start_time, :home_team, :away_team, :home_team_score,
       :away_team_score, :status, :ustv, :catv
 
-    require 'httparty'
-    
     def initialize(game_attributes)
       @id = game_attributes["id"]
       @date = game_attributes["ts"]
@@ -22,7 +20,7 @@ module NHLScores
       return false if status.empty? || home_team_score.empty? || away_team_score.empty?
       return true 
     end
-    
+
     def winner
       not_final_message
       high_score_team
@@ -68,7 +66,7 @@ module NHLScores
     end
 
     def team_name(team_abbrev)
-      return TEAM_ABBREV_MAP[team_abbrev] if TEAM_ABBREV_MAP.has_key?(team_abbrev)
+      return TEAM_ABBREVIATIONS[team_abbrev]
     end
 
     private
@@ -85,11 +83,13 @@ module NHLScores
         return "Columbus Blue Jackets"
       when "Detroit Redwings"
         return "Detroit Red Wings"
+      when "Vegas Goldenknights"
+        return "Vegas Golden Knights"
       else
         return team_name
       end
     end
-    
+
     def high_score
       return home_team_score if home_team_score == away_team_score
       home_team_score > away_team_score ? home_team_score : away_team_score
